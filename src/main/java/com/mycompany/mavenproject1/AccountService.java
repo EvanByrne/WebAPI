@@ -9,6 +9,7 @@ package com.mycompany.mavenproject1;
  *
  * @author Evan Byrne
  */
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transaction;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -125,4 +127,38 @@ public class AccountService {
             em.close();
         }
     }
+    
+    @POST
+    @Path("/{acc_id}/{amount}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public String lodgement(@PathParam("acc_id")int accId, @PathParam("amount")  double amount){
+        
+        Account acc = em.find(Account.class, accId);
+        if(acc != null){
+            //create a transaction
+            tx.begin();
+            Transactions trans = new Transactions();
+            //add the amount new post balance presist the trans
+            Date date = new Date();
+            trans.setTdate(date.toString());
+            double postBal = acc.getCurrentbalance() + amount;
+            trans.setPostBalance(postBal);
+         
+            
+            acc.setCurrentbalance(postBal);
+            acc.addTransaction(trans);
+            em.persist(trans);
+            em.persist(acc);
+            tx.commit();
+            em.refresh(acc);
+            em.close();
+            emf.close();
+            
+            
+            //from the account add the amount to the balance and presist the account 
+        }
+        
+        return "";
+    }
+    
 }

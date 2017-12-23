@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.transaction.Transaction;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,10 +29,15 @@ public class Account implements Serializable {
     private int accountId;
     private String accountname;
     private int accountNumber;
-    private int currentbalance;
-    private int sortcode;    
+    private double currentbalance;
+    private int sortcode;   
+
+    public Account() {
+        transaction = new ArrayList<Transactions>();
+    }
+    
     @OneToMany
-    private Collection<Transactions> transaction = new ArrayList<Transactions>();
+    private Collection<Transactions> transaction;
     
     public Collection<Transactions> getTransaction() {
         return transaction;
@@ -45,7 +51,7 @@ public class Account implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public void setCurrentbalance(int currentbalance) {
+    public void setCurrentbalance(double currentbalance) {
         this.currentbalance = currentbalance;
     }
 
@@ -57,7 +63,7 @@ public class Account implements Serializable {
         return accountNumber;
     }
 
-    public int getCurrentbalance() {
+    public double getCurrentbalance() {
         return currentbalance;
     }
 
@@ -79,6 +85,10 @@ public class Account implements Serializable {
 
     public void setAccountname(String accountname) {
         this.accountname = accountname;
+    }
+    
+     public void addTransaction(Transactions trans){
+        transaction.add(trans);
     }
 
     Object getAccount() {

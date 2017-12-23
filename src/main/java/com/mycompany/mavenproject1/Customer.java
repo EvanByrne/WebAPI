@@ -21,8 +21,15 @@ public class Customer implements Serializable {
     private String name;
     private String email;
     private String address;
+    
     @OneToMany
-    private Collection<Account> account = new ArrayList<Account>();
+    private Collection<Account> account;
+
+    public Customer() {
+         account = new ArrayList<Account>();
+    }
+    
+    
     
     public Collection<Account> getAccount() {
         return account;
