@@ -6,7 +6,6 @@
 package com.mycompany.mavenproject1;
 
 import java.io.Serializable;
-import java.util.Date;// changed to int 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,14 +24,19 @@ public class Transactions implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO) 
     private int transactionId;
     private String transactionName;
-    private int postBalance;
-    private int tDate;
+    private double postBalance;
+    private String tDate;
 
-    public int getPostBalance() {
+    public double getPostBalance() {
         return postBalance;
     }
 
-    public int getTDate() {
+    public void setPostBalance(double postBalance) {
+        this.postBalance = postBalance;
+    }
+    
+    
+    public String getTDate() {
         return tDate;
     }
 
@@ -40,7 +44,7 @@ public class Transactions implements Serializable {
         this.postBalance = postBalance;
     }
 
-    public void setTdate(int tDate) {
+    public void setTdate(String tDate) {
         this.tDate = tDate;
     }
     
@@ -48,11 +52,6 @@ public class Transactions implements Serializable {
     public int getTransactionId() {
         return transactionId;
     }
-
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
-    }
-
 
     public String getTransactionName() {
         return transactionName;
